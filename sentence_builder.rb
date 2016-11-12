@@ -55,10 +55,6 @@ module WestSide
       return before, match, after
     end
 
-    def type_of(word)
-      @word_types.type_of(word)
-    end
-
     def remove_syllables(sentence, num_syllables)
       words = sentence.split(" ")
       count = 0
@@ -124,7 +120,7 @@ module WestSide
       sentence.sub!(")", "")
       sentence.sub!("(", "")
       words = sentence.split(" ")
-      words.map do |w|
+      words.map! do |w|
         w.gsub(/\bi\b/, 'I')
       end
       words.join(" ")
