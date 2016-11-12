@@ -36,7 +36,6 @@ class Rhyme
     end
 
     rhyming_words[0..top][index][WORD]
-
   end
 
   class BodyNotSetError < StandardError ; end
