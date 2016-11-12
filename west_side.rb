@@ -38,8 +38,7 @@ module WestSide
       used = Set.new
       while lines.length < @num_couplets*2 do
         if lines.empty?
-          puts "First word was bad :("
-          return
+          return ["Oops, something went wrong :("]
         end
         begin
           if lines.length.odd?
