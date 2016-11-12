@@ -3,7 +3,7 @@
 require 'sinatra'
 require 'json'
 require 'net/http'
-require 'secure_random'
+require 'securerandom'
 
 require_relative 'west_side.rb'
 
