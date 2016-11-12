@@ -47,13 +47,16 @@ module WestSide
     end
 
     def get_lines_around(word)
-      prev_line, current_line, line_after = ""
       context = "((?:.*\n){2})"
-      regexp = /.* #{word}.*\n/
+      regexp = /.* #{word}\b.*\n/
       text =~ /^#{context}(#{regexp})#{context}/
       before, match, after = $1, $2, $3
-      @text = / #{word}.*/m.match(text).to_s
-      return before.delete!('"'), match.delete!('"'), after.delete!('"')
+      before ||= ""
+      match ||= ""
+      after ||= ""
+      @text = /#{after}.*/m.match(@text).to_s
+      #@text = /(?<=\b)(?!\b#{word}).*/mx.match(@text).to_s.lstrip
+      return before, match, after
     end
 
     def type_of(word)
@@ -80,7 +83,7 @@ module WestSide
       words = sentence.split(" ")
       count = 0
       to_remove = 0
-      for i in 0 ... words.size
+      for i in 0 ... words.size - 1
         count += syllables_in words[i]
         if (count >= num_syllables)
           to_remove = i + 1
@@ -88,6 +91,24 @@ module WestSide
         end
       end
       words.drop(to_remove).join(" ")
+    end
+
+    def get_syllables(sentence, num_syllables)
+      if !sentence
+        return ""
+      end
+      words = sentence.split(" ")
+      count = 0
+      to_add = 0
+      words = words.reverse
+      for i in 0 ... words.size
+        count += syllables_in words[i]
+        if (count >= num_syllables)
+          to_add = i + 1
+          break
+        end
+      end
+      words.drop(words.size - to_add).reverse.join(" ")
     end
 
     def get_sentence(word, num_syllables)
@@ -99,6 +120,10 @@ module WestSide
         if syllables > num_syllables
           sentence = remove_syllables(sentence, syllables - num_syllables)
         elsif syllables < num_syllables
+          sentence = get_syllables(before, num_syllables - syllables) + sentence
+        end
+        if sentence == ""
+          break
         end
         valid = validate(sentence)
       end
@@ -106,5 +131,3 @@ module WestSide
     end
   end
 end
-
-puts WestSide::SentenceBuilder.new.get_sentence("time", 10)
