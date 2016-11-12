@@ -20,7 +20,7 @@ module WestSide
         return
       end
 
-      syllables = (8..16).to_a.sample
+      syllables = (8..12).to_a.sample
       rap = @builder.build(word, syllables)
 
       puts rap

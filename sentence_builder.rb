@@ -51,7 +51,7 @@ module WestSide
 
     def get_lines_around(word)
       context = "((?:.*\n){2})"
-      regexp = /.*#{word}\b.*\n/i
+      regexp = /.*[^A-z]#{word}\b.*\n/i
       text =~ /^#{context}(#{regexp})#{context}/
       before, match, after = $1, $2, $3
       before ||= ""
@@ -139,13 +139,16 @@ module WestSide
       sentence.sub!("Mrs;", "Mrs.")
       sentence.sub!(")", "")
       sentence.sub!("(", "")
-      sentence
+      words = sentence.split(" ")
+      words.map do |w|
+        w.gsub(/\bi\b/, 'I')
+      end
+      words.join(" ")
     end
 
     def get_sentence(word, num_syllables)
-      found_all_sentences = false
       valid_sentences = []
-      while found_all_sentences == false do
+      15.times do
         before, match, after = get_lines_around word
         sentence = /.*#{word}/i.match(match).to_s
         syllables = get_sentence_syllables sentence
@@ -158,16 +161,17 @@ module WestSide
         end
         sentence = sentence.gsub('"', '')
         if sentence.gsub(/\s+/, "").empty?
-          found_all_sentences = true
           break
         end
         sentence = contextify(sentence)
         valid_sentences << sentence
       end
       if valid_sentences.size == 0
-        return "OOPS"
+        raise NoSentenceError
       end
       rank(valid_sentences, word, num_syllables)
     end
+
+    class NoSentenceError < StandardError ; end
   end
 end
