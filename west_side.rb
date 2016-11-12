@@ -4,6 +4,7 @@ require_relative 'sentence_builder.rb'
 require_relative 'related_words.rb'
 require_relative 'rhyming.rb'
 require_relative 'word_types.rb'
+require_relative 'seussifier.rb'
 
 module WestSide
   class Builder
@@ -14,6 +15,7 @@ module WestSide
       @source = source
       @word_types = WestSide::WordTypes.new
       @related = WestSide::RelatedWords.new(@source, @word_types)
+      @seussifier = WestSide::Seussifier.new()
       @num_couplets = num_couplets
     end
 
@@ -21,9 +23,16 @@ module WestSide
       @related.words.to_a.shuffle[0...15].to_a.sort
     end
 
-    def build(seed, syllables = nil)
+    def build(seed, seussify = false, syllables = nil)
       syllables ||= (5..11).to_a.sample
-      generate_lines(seed, syllables)
+      lines = generate_lines(seed, syllables)
+      return lines unless seussify
+      begin
+        seussified_lines = @seussifier.seussify(lines)
+      rescue
+        return lines
+      end
+      seussified_lines
     end
 
     def valid_words

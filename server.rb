@@ -19,7 +19,7 @@ post '/generate' do
   content_type :json
   data = JSON.parse(request.body.read)
 
-  {lines: builder.build(data["seed"])}.to_json
+  {lines: builder.build(data["seed"], data["seussify"])}.to_json
 end
 
 get '/' do

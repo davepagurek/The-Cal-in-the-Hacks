@@ -62,6 +62,10 @@ button:hover, button.inverted {
   color: #FFF;
 }
 
+form {
+  padding-bottom: 1em;
+}
+
 #seeds button {
   animation-duration:0.4s;
   animation-name: fadeIn;

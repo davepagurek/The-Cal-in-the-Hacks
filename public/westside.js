@@ -43,7 +43,7 @@ function loadSeeds() {
 
 function generate(seed) {
   showLoader();
-  axios.post('/generate', {seed: seed}).then(function(response) {
+  axios.post('/generate', {seed: seed, seussify: document.getElementById("seussify").checked}).then(function(response) {
     // clear verses
     var verses = document.querySelector('#verses');
     while (verses.firstChild) {
