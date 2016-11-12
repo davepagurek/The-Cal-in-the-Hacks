@@ -1,3 +1,5 @@
+const TEXT_TO_SPEECH = 'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize';
+
 function showSection(id) {
   Array.prototype.forEach.call(
     document.querySelectorAll("section"),
@@ -55,6 +57,10 @@ function generate(seed) {
 
     showSection("rap");
   });
+}
+
+function textToSpeech() {
+  axios.post('/gen_audio', { text: text });
 }
 
 document.querySelector("#more").addEventListener("click", loadSeeds);
