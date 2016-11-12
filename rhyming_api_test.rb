@@ -26,15 +26,10 @@ class Rhyme
     @rhyming_words = JSON.parse(body)
   end
 
-  def get_one_rhyme
-    index = rand(rhyming_words.length)
-
-    # keep looping until you find a word with a score of at least 250
-    while rhyming_words[index][SCORE] < 250 do
-      index = rand(rhyming_words.length)
-    end
-
-    rhyming_words[index][WORD]
+  def get_top_rhyme(top = 10)
+    index = rand(top)
+    rhyming_words.sort_by{ |word| word[SCORE] }.reverse!
+    rhyming_words[0..top][index][WORD]
   end
 
   class BodyNotSetError < StandardError ; end
