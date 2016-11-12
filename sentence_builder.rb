@@ -137,6 +137,8 @@ module WestSide
       sentence.sub!("Mr;", "Mr.")
       sentence.sub!("Ms;", "Ms.")
       sentence.sub!("Mrs;", "Mrs.")
+      sentence.sub!(")", "")
+      sentence.sub!("(", "")
       sentence
     end
 
