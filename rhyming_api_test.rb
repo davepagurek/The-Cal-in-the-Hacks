@@ -26,10 +26,17 @@ class Rhyme
     @rhyming_words = JSON.parse(body)
   end
 
-  def get_top_rhyme(top = 10)
+  def get_top_rhyme(used_words = {}, top: 10)
     index = rand(top)
     rhyming_words.sort_by{ |word| word[SCORE] }.reverse!
+
+    # wont work if every word in [0..top] is in used_words
+    while used_words.include?(rhyming_words[0..top][index][WORD]) do
+      index = rand(top)
+    end
+
     rhyming_words[0..top][index][WORD]
+
   end
 
   class BodyNotSetError < StandardError ; end
