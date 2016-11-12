@@ -1,4 +1,5 @@
 require 'set'
+require_relative 'related_words.rb'
 
 module WestSide
   class SentenceBuilder
@@ -15,6 +16,7 @@ module WestSide
       @verb_t = File.read("sources/data/verb_t").split(/\s+/).to_set
       @source_file = source
       @text = File.read(source)
+      @related_words = WestSide::RelatedWords.new(source)
     end
 
     def text
@@ -72,16 +74,6 @@ module WestSide
       return "verb"
     end
 
-    def validate(sentence)
-      return false if sentence.include? "."
-      return true
-      # types = []
-      # sentence.split(" ").each do |word|
-      #   types << type_of(word)
-      # end
-      # return types.include?("verb") && types.include?("noun")
-    end
-
     def remove_syllables(sentence, num_syllables)
       words = sentence.split(" ")
       count = 0
@@ -114,8 +106,28 @@ module WestSide
       words.reverse.drop(words.size - to_add).join(" ")
     end
 
-    def evaluate(sentence)
+    def score(sentence, word, wanted_syllables)
+      score = 0
+      words = sentence.split(" ")
+      words.each do |w|
+        if w != ""
+          score += @related_words.relatedness(w, word)
+        end
+      end
+      syllables = get_sentence_syllables(sentence)
+      multiplier = 1
+      if syllables > wanted_syllables
+        multiplier = 1 - (syllables.to_f - wanted_syllables)/wanted_syllables
+      elsif syllables < wanted_syllables
+        multiplier = syllables.to_f / wanted_syllables
+      end
+      multiplier * score
+    end
 
+    def rank(sentences, word, wanted_syllables)
+      scores = sentences.map { |s| score(s, word, wanted_syllables) }
+      index = scores.index(scores.max)
+      sentences[index]
     end
 
     def get_sentence(word, num_syllables)
@@ -132,14 +144,13 @@ module WestSide
             sentence = get_syllables(before, num_syllables - syllables) + " " + sentence
           end
         end
-        if sentence == ""
+        sentence = sentence.gsub('"', '')
+        if sentence.strip == ""
           found_all_sentences = true
         end
-        if validate(sentence)
-          valid_sentences << sentence.gsub('"', '')
-        end
+        valid_sentences << sentence
       end
-      valid_sentences
+      rank(valid_sentences, word, num_syllables)
     end
   end
 end
