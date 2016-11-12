@@ -18,13 +18,13 @@ function showLoader() {
 function loadSeeds() {
   showLoader();
   axios.get('/sample_words').then(function(response) {
-    console.log(response);
     // clear seeds
     var seeds = document.querySelector('#seeds');
     while (seeds.firstChild) {
       seeds.removeChild(seeds.firstChild);
     }
 
+    // append new seeds
     response.data.words.forEach(function(seed) {
       seedBtn = document.createElement("button");
       seedBtn.textContent = seed;
@@ -42,4 +42,5 @@ function generate(seed) {
   alert("Not implemented yet :)");
 }
 
+document.querySelector("#more").addEventListener("click", loadSeeds);
 loadSeeds();
