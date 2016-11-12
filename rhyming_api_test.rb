@@ -34,7 +34,7 @@ class Rhyme
       index = rand(rhyming_words.length)
     end
 
-    rhyming_words[index]
+    rhyming_words[index][WORD]
   end
 
   class BodyNotSetError < StandardError ; end
