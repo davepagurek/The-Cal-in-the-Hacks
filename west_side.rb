@@ -34,30 +34,32 @@ module WestSide
           .new(@source)
           .get_sentence(word, syllables)
       ]
+      endings = [word]
       used = Set.new
       while lines.length < @num_couplets*2 do
-        puts lines.inspect
         if lines.empty?
           puts "First word was bad :("
           return
         end
         begin
           if lines.length.odd?
-            word = Rhyme.new(lines.last).get_top_rhyme(
+            word = Rhyme.new(endings.last).get_top_rhyme(
               used_words: used,
               potential_words: @related.words
             )
           else
-            word = @related.related_word(lines.last)
+            word = @related.related_word(endings.last)
           end
           lines.push(
             WestSide::SentenceBuilder
               .new(@source)
               .get_sentence(word, syllables)
           )
+          endings.push(word)
           used.add(word)
         rescue Rhyme::EmptyFilteredSetError, SentenceBuilder::NoSentenceError
           lines.pop
+          endings.pop
         end
       end
       lines
