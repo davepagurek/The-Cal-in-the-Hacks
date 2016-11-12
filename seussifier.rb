@@ -14,10 +14,10 @@ module WestSide
       index = get_random_pair(rap)
       style = @word_maker.suffix[rand(0..@word_maker.suffix.size - 1)]
       last_word = rap[index].split.last
-      replacement = @word_maker.make_word(last_word, style)
+      replacement = @word_maker.make_word(last_word, style, false)
       rap[index].sub!(last_word, replacement)
       last_word = rap[index+1].split.last
-      replacement = @word_maker.make_word(last_word, style)
+      replacement = @word_maker.make_word(last_word, style, true)
       rap[index+1].sub!(last_word, replacement)
       rap
     end
@@ -32,8 +32,8 @@ module WestSide
         @suffix = ["itty", "uzz", "-a-ma-", "eeds", "izzle"]
       end
 
-      def drop_vowels(word)
-        ending = word.match(/[aeyiou]+$/n)
+      def drop(word, pattern)
+        ending = word.match(pattern)
         if ending == nil
           return word
         else
@@ -42,8 +42,13 @@ module WestSide
         end
       end
 
-      def make_word(word, style)
-        word = drop_vowels(word)
+      def make_word(word, style, second_pair)
+        pattern = /(ing|ed|s)$/n
+        if (second_pair)
+          pattern = /(ing|ed)$/n
+        end
+        word = drop(word, pattern)
+        word = drop(word, /[aeyiou]+$/n)
         case style
           when "itty"
             word + "-itty " + word

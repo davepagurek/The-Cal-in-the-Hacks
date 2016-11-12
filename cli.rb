@@ -22,7 +22,7 @@ module WestSide
         return
       end
 
-      syllables = (8..12).to_a.sample
+      syllables = (5..10).to_a.sample
       rap = @builder.build(word, syllables)
       rap = @seussifier.seussify(rap)
       puts rap
