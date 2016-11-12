@@ -26,12 +26,23 @@ class Rhyme
     @rhyming_words = JSON.parse(body)
   end
 
+  def check_every_word(used_words, potential_words)
+    return false unless used_words.length == potential_words
+
+    used_words.each do |word|
+      return false unless potential_words.include? word
+    end
+
+    true
+  end
+
   def get_top_rhyme(used_words = {}, top: 10)
     index = rand(top)
     rhyming_words.sort_by{ |word| word[SCORE] }.reverse!
 
-    # wont work if every word in [0..top] is in used_words
-    while used_words.include?(rhyming_words[0..top][index][WORD]) do
+    raise UsedAllWords if check_every_word(used_words, rhyming_words[0..top])
+
+    while used_words.include?rhyming_words[0..top][index][WORD]) do
       index = rand(top)
     end
 
@@ -39,4 +50,5 @@ class Rhyme
   end
 
   class BodyNotSetError < StandardError ; end
+  class UsedAllWordsError < StandardError ; end
 end
