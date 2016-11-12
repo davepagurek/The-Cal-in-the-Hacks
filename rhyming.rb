@@ -23,7 +23,7 @@ class Rhyme
 
   def json_rhymes
     raise BodyNotSetError if body.nil?
-    @rhyming_words = JSON.parse(body)
+    @rhyming_words ||= JSON.parse(body)
   end
 
   def check_every_word(used_words, potential_words)
@@ -37,12 +37,15 @@ class Rhyme
   end
 
   def get_top_rhyme(used_words = {}, top: 10)
+    get_response
+    json_rhymes
+
     index = rand(top)
     rhyming_words.sort_by{ |word| word[SCORE] }.reverse!
 
     raise UsedAllWords if check_every_word(used_words, rhyming_words[0..top])
 
-    while used_words.include?rhyming_words[0..top][index][WORD]) do
+    while used_words.include? rhyming_words[0..top][index][WORD] do
       index = rand(top)
     end
 

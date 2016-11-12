@@ -41,4 +41,4 @@ module WestSide
   end
 end
 
-puts WestSide.get_sentence("time")
+# puts WestSide.get_sentence("time")
