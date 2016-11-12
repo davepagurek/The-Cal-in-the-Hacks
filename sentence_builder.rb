@@ -14,7 +14,7 @@ module WestSide
       @verb_i = File.read("sources/data/verb_i").split(/\s+/).to_set
       @verb_t = File.read("sources/data/verb_t").split(/\s+/).to_set
       @source_file = source
-      @text = File.read(source)
+      @text = File.read(@source_file)
     end
 
     def text
