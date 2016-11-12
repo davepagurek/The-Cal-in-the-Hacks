@@ -16,7 +16,10 @@ module WestSide
     end
 
     def words
-      @words ||= File.read(@source).split(/\s+/).to_set
+      @words ||= File.read(@source)
+      .split(/\s+/)
+      .map{|w| w.gsub(/\W/, '')}
+      .to_set
     end
 
     def model
