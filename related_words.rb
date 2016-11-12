@@ -68,7 +68,7 @@ module WestSide
     end
 
     def related_words(word, used = Set.new)
-      (model.most_similar(word, 20).to_set - used)
+      (model.most_similar(word, 200).to_set - used)
         .map do |(stem, _)|
           words.find{|w| w.start_with?(stem)}
         end
@@ -77,7 +77,7 @@ module WestSide
     end
 
     def related_word(word, used = Set.new)
-      related_words(word, used).sample
+      related_words(word, used)[0..20].sample || words.to_a.sample
     end
   end
 end
