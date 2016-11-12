@@ -8,6 +8,7 @@ module WestSide
   class CLI
     def initialize(source: "sources/gatsby.txt", num_couplets: 5)
       @related = WestSide::RelatedWords.new(source)
+      @sentence = WestSide::SentenceBuilder.new(source)
       @num_couplets = num_couplets
     end
 
@@ -21,7 +22,11 @@ module WestSide
         return
       end
 
-      puts generate_endings(word)
+      syllables = (8..16).to_a.sample
+      rap = generate_endings(word)
+        .map{|w| @sentence.get_sentence(w, syllables)}
+
+      puts rap
     end
 
     def generate_endings(word)
@@ -42,7 +47,7 @@ module WestSide
           endings.pop
         end
       end
-      puts endings
+      endings
     end
   end
 end

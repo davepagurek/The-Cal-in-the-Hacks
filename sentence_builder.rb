@@ -2,7 +2,7 @@ require 'set'
 
 module WestSide
   class SentenceBuilder
-    def initialize()
+    def initialize(source)
       @adjectives = File.read("sources/data/adj").split(/\s+/).to_set
       @adverbs = File.read("sources/data/adv").split(/\s+/).to_set
       @articles = File.read("sources/data/article").split(/\s+/).to_set
@@ -13,11 +13,12 @@ module WestSide
       @pros = File.read("sources/data/pro").split(/\s+/).to_set
       @verb_i = File.read("sources/data/verb_i").split(/\s+/).to_set
       @verb_t = File.read("sources/data/verb_t").split(/\s+/).to_set
-      @text = File.read("sources/gatsby.txt")
+      @source_file = source
+      @text = File.read(source)
     end
 
     def text
-      @text ||= File.read("sources/gatsby.txt")
+      @text ||= File.read(@source_file)
     end
 
     def first_vowel(word)
@@ -142,5 +143,3 @@ module WestSide
     end
   end
 end
-
-puts WestSide::SentenceBuilder.new.get_sentence("villainous", 10)
