@@ -27,9 +27,10 @@ function loadSeeds() {
     }
 
     // append new seeds
-    response.data.words.forEach(function(seed) {
+    response.data.words.forEach(function(seed, i) {
       seedBtn = document.createElement("button");
       seedBtn.textContent = seed;
+      seedBtn.style.animationDelay = "" + (i*0.05) + "s";
       seedBtn.addEventListener("click", function() {
         generate(seed);
       });
@@ -49,8 +50,9 @@ function generate(seed) {
       verses.removeChild(verses.firstChild);
     }
 
-    response.data.lines.forEach(function(line) {
+    response.data.lines.forEach(function(line, i) {
       var lineDiv = document.createElement("div");
+      lineDiv.style.animationDelay = "" + (i*0.2) + "s";
       lineDiv.textContent = line;
       verses.appendChild(lineDiv);
     });
