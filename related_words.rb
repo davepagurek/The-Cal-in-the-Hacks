@@ -50,8 +50,6 @@ module WestSide
 
     def word_stems
       @word_stems ||= model.token_index.keys.to_set
-      puts @word_stems.length
-      @word_stems
     end
 
     def relatedness(a, b)
