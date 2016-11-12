@@ -62,7 +62,7 @@ module WestSide
       return model.send(:cosine, vec_a, vec_b)
     end
 
-    def related_word_stems(word, used = Set.new)
+    def related_words(word, used = Set.new)
       (model.most_similar(word, 20).to_set - used)
         .map do |(stem, _)|
           words.find{|w| w.start_with?(stem)}
@@ -71,7 +71,8 @@ module WestSide
         .map{|w| w.gsub(/\W/, '')}
     end
   end
+
+  def related_word(word, used = Set.new)
+    related_words(word, used).sample
+  end
 end
-
-
-#puts WestSide::RelatedWords.new("sources/gatsby.txt").related_word_stems("sport")
