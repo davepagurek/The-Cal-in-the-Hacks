@@ -25,15 +25,23 @@ module WestSide
     end
 
     def generate_endings(word)
-      (@num_couplets*2 - 1).times.reduce([word]) do |endings, _|
-        # p "endings: #{endings.inspect}"
-
-        if endings.length.odd?
-          endings.push(Rhyme.new(endings.last).get_top_rhyme(potential_words: @related.words))
-        else
-          endings.push(@related.related_word(endings.last))
+      endings = [word]
+      while endings.length < @num_couplets do
+        if endings.empty?
+          puts "First word was bad :("
+          return
+        end
+        begin
+          if endings.length.odd?
+            endings.push(Rhyme.new(endings.last).get_top_rhyme(potential_words: @related.words))
+          else
+            endings.push(@related.related_word(endings.last))
+          end
+        rescue Rhyme::EmptyFilteredSetError
+          endings.pop
         end
       end
+      puts endings
     end
   end
 end
