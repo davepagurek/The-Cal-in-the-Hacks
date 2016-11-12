@@ -12,6 +12,7 @@ module WestSide
       @pros = File.read("sources/data/pro").split(/\s+/).to_set
       @verb_i = File.read("sources/data/verb_i").split(/\s+/).to_set
       @verb_t = File.read("sources/data/verb_t").split(/\s+/).to_set
+      @seuss_dict = File.read("sources/data/seuss_dict").split(/\s+/).to_set
     end
 
     def type_of(word)
@@ -44,8 +45,24 @@ module WestSide
       rap
     end
 
+    def seussify_line(rap)
+      index = rand(0..rap.size - 1)
+      words = rap[index].split(" ")
+      changed = false
+      words.map! do |w|
+        if type_of(w) == "noun" && changed == false
+          w = @seuss_dict.to_a.sample
+          changed = true
+        end
+        w
+      end
+      rap[index] = words.join(" ")
+      rap
+    end
+
     def seussify(rap)
       rap = modify_pair(rap)
+      rap = seussify_line(rap)
     end
 
     class WordMaker
