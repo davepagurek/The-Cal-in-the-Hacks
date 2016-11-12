@@ -53,12 +53,10 @@ module WestSide
 
     def word_stems
       @word_stems ||= model.token_index.keys.to_set
-      puts @word_stems.length
       @word_stems
     end
 
     def relatedness(a, b)
-      puts word_stems.inspect
       vec_a = model.send(:vector, word_stems.find{|w| a.start_with?(w)})
       vec_b = model.send(:vector, word_stems.find{|w| b.start_with?(w)})
 

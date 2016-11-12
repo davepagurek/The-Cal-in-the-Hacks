@@ -11,7 +11,6 @@ module WestSide
       num_couplets: 5
     )
       @related = WestSide::RelatedWords.new(source)
-      @sentence = WestSide::SentenceBuilder.new(source)
       @num_couplets = num_couplets
     end
 
@@ -21,7 +20,7 @@ module WestSide
 
     def build(seed, syllables)
       generate_endings(seed)
-        .map{|w| @sentence.get_sentence(w, syllables)}
+        .map{|w| WestSide::SentenceBuilder.new("#{File.dirname(__FILE__)}/sources/gatsby.txt",).get_sentence(w, syllables)}
     end
 
     def valid_words

@@ -51,12 +51,13 @@ module WestSide
 
     def get_lines_around(word)
       context = "((?:.*\n){2})"
-      regexp = /.*#{word}\b.*\n/
+      regexp = /.*#{word}\b.*\n/i
       text =~ /^#{context}(#{regexp})#{context}/
       before, match, after = $1, $2, $3
       before ||= ""
       match ||= ""
       after ||= ""
+      after = after.gsub(/\W/, '')
       @text = /#{after}.*/m.match(@text).to_s
       #@text = /(?<=\b)(?!\b#{word}).*/mx.match(@text).to_s.lstrip
       return before, match, after
@@ -130,12 +131,21 @@ module WestSide
       sentences[index]
     end
 
+    def contextify(sentence)
+      sentence = sentence.capitalize
+      sentence.sub!(".", ";")
+      sentence.sub!("Mr;", "Mr.")
+      sentence.sub!("Ms;", "Ms.")
+      sentence.sub!("Mrs;", "Mrs.")
+      sentence
+    end
+
     def get_sentence(word, num_syllables)
       found_all_sentences = false
       valid_sentences = []
       while found_all_sentences == false do
         before, match, after = get_lines_around word
-        sentence = /.*#{word}/.match(match).to_s
+        sentence = /.*#{word}/i.match(match).to_s
         syllables = get_sentence_syllables sentence
         if syllables > num_syllables
           sentence = remove_syllables(sentence, syllables - num_syllables)
@@ -145,10 +155,15 @@ module WestSide
           end
         end
         sentence = sentence.gsub('"', '')
-        if sentence.strip == ""
+        if sentence.gsub(/\s+/, "").empty?
           found_all_sentences = true
+          break
         end
+        sentence = contextify(sentence)
         valid_sentences << sentence
+      end
+      if valid_sentences.size == 0
+        return "OOPS"
       end
       rank(valid_sentences, word, num_syllables)
     end
