@@ -107,4 +107,4 @@ module WestSide
   end
 end
 
-puts WestSide::SentenceBuilder.new.get_sentence("time", 10)
+# puts WestSide::SentenceBuilder.new.get_sentence("time", 10)

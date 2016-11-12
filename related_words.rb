@@ -34,7 +34,7 @@ module WestSide
       if SOURCES.all?{|f| File.exists?(f)}
         @model.load(*SOURCES)
       else
-        text = File.read(INPUT)
+        text = File.read(@source)
         @model.fit(text)
 
         corpus = Glove::Corpus.build(text, {
