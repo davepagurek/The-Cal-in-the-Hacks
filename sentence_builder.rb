@@ -3,7 +3,7 @@ require_relative 'related_words.rb'
 
 module WestSide
   class SentenceBuilder
-    def initialize(source, related)
+    def initialize(source, related = nil)
       @adjectives = File.read("sources/data/adj").split(/\s+/).to_set
       @adverbs = File.read("sources/data/adv").split(/\s+/).to_set
       @articles = File.read("sources/data/article").split(/\s+/).to_set
