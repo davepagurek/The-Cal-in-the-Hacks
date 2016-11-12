@@ -4,16 +4,21 @@ require 'sinatra'
 require 'json'
 require_relative 'west_side.rb'
 
-@builder = WestSide::Builder.new
+builder = WestSide::Builder.new
 
 get '/sample_words' do
   content_type :json
-  {sample_words: @builder.words_sample.to_a}
+  {words: builder.words_sample.to_a}.to_json
 end
 
 post '/generate' do
   content_type :json
   data = JSON.parse(request.body.read)["seed"]
 
-  {verses: @builder.build(data.seed, data.syllables)}
+  {verses: builder.build(data.seed, data.syllables)}.to_json
+end
+
+get '/' do
+  content_type :html
+  File.new('public/index.html').readlines
 end

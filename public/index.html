@@ -1,1 +1,26 @@
-hello, world
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      WestSide
+    </title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <section id="loader">
+      Loading
+    </section>
+    <section id="intro" class="hidden">
+      <h1>WestSide</h1>
+      <p>Pick a seed word</p>
+      <div id="seeds"></div>
+    </section>
+    <section id="rap" class="hidden">
+      <div id="verses"></div>
+      <button id="another">Another one</button>
+    </section>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="westside.js"></script>
+  </body>
+</html>
