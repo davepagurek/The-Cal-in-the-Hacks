@@ -10,7 +10,8 @@ module WestSide
       source: "#{File.dirname(__FILE__)}/sources/gatsby.txt",
       num_couplets: 5
     )
-      @related = WestSide::RelatedWords.new(source)
+      @source = source
+      @related = WestSide::RelatedWords.new(@source)
       @num_couplets = num_couplets
     end
 
@@ -18,34 +19,49 @@ module WestSide
       @related.words.to_a.shuffle[0..10].to_a.sort
     end
 
-    def build(seed, syllables)
-      generate_endings(seed)
-        .map{|w| WestSide::SentenceBuilder.new("#{File.dirname(__FILE__)}/sources/gatsby.txt",).get_sentence(w, syllables)}
+    def build(seed, syllables = nil)
+      syllables ||= (5..11).to_a.sample
+      generate_lines(seed, syllables)
     end
 
     def valid_words
       @related.words
     end
 
-    def generate_endings(word)
+    def generate_lines(word, syllables)
+      lines = [
+        WestSide::SentenceBuilder
+          .new(@source)
+          .get_sentence(word, syllables)
+      ]
       endings = [word]
-      while endings.length < @num_couplets*2 do
-        puts endings.inspect
-        if endings.empty?
-          puts "First word was bad :("
-          return
+      used = Set.new
+      while lines.length < @num_couplets*2 do
+        if lines.empty?
+          return ["Oops, something went wrong :("]
         end
         begin
-          if endings.length.odd?
-            endings.push(Rhyme.new(endings.last).get_top_rhyme(potential_words: @related.words))
+          if lines.length.odd?
+            word = Rhyme.new(endings.last).get_top_rhyme(
+              used_words: used,
+              potential_words: @related.words
+            )
           else
-            endings.push(@related.related_word(endings.last))
+            word = @related.related_word(endings.last)
           end
-        rescue Rhyme::EmptyFilteredSetError
+          lines.push(
+            WestSide::SentenceBuilder
+              .new(@source)
+              .get_sentence(word, syllables)
+          )
+          endings.push(word)
+          used.add(word)
+        rescue Rhyme::EmptyFilteredSetError, SentenceBuilder::NoSentenceError
+          lines.pop
           endings.pop
         end
       end
-      endings
+      lines
     end
   end
 end

@@ -1,10 +1,60 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Abhaya+Libre:400,700');
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Abhaya Libre', serif;
+  margin: 0;
+  padding: 0;
 }
 
 .hidden {
   overflow: hidden;
   height: 0;
+  padding: 0 5em;
+  opacity: 0;
+}
+
+section {
+  box-sizing: border-box;
+  padding: 5em;
+  transition: all ease 0.4s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+h1 {
+  font-weight: normal;
+  font-size: 5em;
+  margin: 0 0 0.5em 0;
+}
+
+#seed_list {
+  font-size: 0;
+  max-width: 20rem;
+  text-align: center;
+}
+
+#seeds {
+  display: inline;
+}
+
+button, button.inverted:hover {
+  border: 1px solid #DB5171;
+  color: #DB5171;
+  background-color: #FFF;
+  font-size: 1rem;
+  padding: 0.5em;
+  border-radius: 0.2em;
+  transition: all ease 0.3s;
+}
+button:hover, button.inverted {
+  background-color: #DB5171;
+  color: #FFF;
+}
+
+#verses {
+  font-size: 1.1em;
+  margin-bottom: 1em;
 }

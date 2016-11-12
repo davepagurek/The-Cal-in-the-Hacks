@@ -3,7 +3,7 @@ require_relative 'west_side.rb'
 
 module WestSide
   class CLI
-    def initialize(source: "sources/gatsby.txt", num_couplets: 5)
+    def initialize(source: "sources/oz.txt", num_couplets: 5)
       @builder = WestSide::Builder.new(
         source: source,
         num_couplets: num_couplets
@@ -20,7 +20,7 @@ module WestSide
         return
       end
 
-      syllables = (8..16).to_a.sample
+      syllables = (8..12).to_a.sample
       rap = @builder.build(word, syllables)
 
       puts rap
