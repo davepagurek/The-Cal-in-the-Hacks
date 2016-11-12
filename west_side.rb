@@ -7,7 +7,7 @@ require_relative 'rhyming.rb'
 module WestSide
   class Builder
     def initialize(
-      source: "#{File.dirname(__FILE__)}/sources/gatsby.txt",
+      source: "#{File.dirname(__FILE__)}/sources/oz.txt",
       num_couplets: 5
     )
       @source = source
@@ -32,7 +32,7 @@ module WestSide
       begin
         lines = [
           WestSide::SentenceBuilder
-            .new(@source)
+            .new(@source, @related)
             .get_sentence(word, syllables)
         ]
       rescue SentenceBuilder::NoSentenceError

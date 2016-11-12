@@ -1,7 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Abhaya+Libre:400,700');
 
-body {
+* {
   font-family: 'Abhaya Libre', serif;
+}
+
+body {
   margin: 0;
   padding: 0;
 }
