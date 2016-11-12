@@ -3,6 +3,7 @@
 require 'sinatra'
 require 'json'
 require 'net/http'
+require 'secure_random'
 
 require_relative 'west_side.rb'
 
@@ -19,7 +20,17 @@ post '/generate' do
   content_type :json
   data = JSON.parse(request.body.read)
 
-  {lines: builder.build(data["seed"], data["seussify"])}.to_json
+  poem = builder.build(data["seed"])
+  data = http.request(request)
+  File.write(data, 'poem.ogg')
+  { lines: poem }.to_json
+
+  uuid = SecureRandom.uuid
+  Kernel.system "curl -X POST -u 183647eb-7c6b-4942-8669-03c4b9379bb9:h3edpLwXlaxR
+                 --header 'Content-Type: application/json'
+                 --header 'Accept: audio/wav'
+                 --data '{\"text\": #{poem.join(', ').inspect }}'
+                 'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize' > public/audio/poem#{uuid}.wav"
 end
 
 get '/' do
