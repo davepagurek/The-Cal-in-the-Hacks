@@ -1,16 +1,14 @@
 #!/usr/bin/env ruby
 
-require 'delegate'
-require 'matrix'
-require 'tf-idf-similarity'
-
 require 'glove'
+require_relative 'word_types.rb'
 
 module WestSide
   class RelatedWords
 
-    def initialize(source = "sources/gatsby.txt")
+    def initialize(source, word_types)
       @source = source
+      @word_types = word_types || WestSide::WordTypes.new
       @saved = ['corpus.bin', 'cooc-matrix.bin', 'word-vec.bin', 'word-biases.bin']
         .map{|f| "preprocessed/#{source.gsub(/\W/, '_')}__#{f}"}
     end
@@ -18,7 +16,8 @@ module WestSide
     def words
       @words ||= File.read(@source)
       .split(/\s+/)
-      .map{|w| w.gsub(/\W/, '')}
+      .map{|w| w.gsub(/\W/, '').downcase}
+      .select{|w| @word_types.valid?(w)}
       .to_set
     end
 
