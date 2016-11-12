@@ -1,0 +1,17 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    matrix (0.0.1)
+    tf-idf-similarity (0.1.5)
+      unicode_utils (~> 1.4)
+    unicode_utils (1.4.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  matrix
+  tf-idf-similarity
+
+BUNDLED WITH
+   1.10.6
