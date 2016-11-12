@@ -26,7 +26,8 @@ module WestSide
 
     def generate_endings(word)
       endings = [word]
-      while endings.length < @num_couplets do
+      while endings.length < @num_couplets*2 do
+        puts endings.inspect
         if endings.empty?
           puts "First word was bad :("
           return
