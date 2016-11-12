@@ -39,8 +39,24 @@ function loadSeeds() {
 }
 
 function generate(seed) {
-  alert("Not implemented yet :)");
+  showLoader();
+  axios.post('/generate', {seed: seed}).then(function(response) {
+    // clear verses
+    var verses = document.querySelector('#verses');
+    while (verses.firstChild) {
+      verses.removeChild(verses.firstChild);
+    }
+
+    response.data.lines.forEach(function(line) {
+      var lineDiv = document.createElement("div");
+      lineDiv.textContent = line;
+      verses.appendChild(lineDiv);
+    });
+
+    showSection("rap");
+  });
 }
 
 document.querySelector("#more").addEventListener("click", loadSeeds);
+document.querySelector("#another").addEventListener("click", loadSeeds);
 loadSeeds();

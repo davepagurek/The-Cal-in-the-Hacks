@@ -8,11 +8,11 @@ require 'glove'
 
 module WestSide
   class RelatedWords
-    SOURCES = ['corpus.bin', 'cooc-matrix.bin', 'word-vec.bin', 'word-biases.bin']
-      .map{|f| "preprocessed/#{f}"}
 
     def initialize(source = "sources/gatsby.txt")
       @source = source
+      @saved = ['corpus.bin', 'cooc-matrix.bin', 'word-vec.bin', 'word-biases.bin']
+        .map{|f| "preprocessed/#{source.gsub(/\W/, '_')}__#{f}"}
     end
 
     def words
@@ -29,10 +29,10 @@ module WestSide
         max_count: 1000
       })
 
-      SOURCES.each{|f| File.delete(f) if File.exists?(f)} if ENV["REPROCESS"]
+      @saved.each{|f| File.delete(f) if File.exists?(f)} if ENV["REPROCESS"]
 
-      if SOURCES.all?{|f| File.exists?(f)}
-        @model.load(*SOURCES)
+      if @saved.all?{|f| File.exists?(f)}
+        @model.load(*@saved)
       else
         text = File.read(@source)
         @model.fit(text)
@@ -45,7 +45,7 @@ module WestSide
 
         @model.train
 
-        @model.save(*SOURCES)
+        @model.save(*@saved)
       end
 
       @model

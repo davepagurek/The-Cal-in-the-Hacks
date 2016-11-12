@@ -18,8 +18,10 @@ module WestSide
       @related.words.to_a.shuffle[0..10].to_a.sort
     end
 
-    def build(seed, syllables)
+    def build(seed, syllables = nil)
+      syllables ||= (5..11).to_a.sample
       generate_endings(seed)
+        .tap{|e| puts e.inspect}
         .map{|w| WestSide::SentenceBuilder.new("#{File.dirname(__FILE__)}/sources/gatsby.txt",).get_sentence(w, syllables)}
     end
 

@@ -13,9 +13,9 @@ end
 
 post '/generate' do
   content_type :json
-  data = JSON.parse(request.body.read)["seed"]
+  data = JSON.parse(request.body.read)
 
-  {verses: builder.build(data.seed, data.syllables)}.to_json
+  {lines: builder.build(data["seed"])}.to_json
 end
 
 get '/' do
