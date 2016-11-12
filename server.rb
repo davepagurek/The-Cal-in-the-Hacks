@@ -28,7 +28,7 @@ get '/' do
 end
 
 post '/gen_audio' do
-  content_type: json
+  content_type :json
   poem = JSON.parse(request.body.read)
   uri = URI.parse(AUDIO_URI)
   http = Net::HTTP.new(uri.host, uri.port)
@@ -38,4 +38,5 @@ post '/gen_audio' do
                   'text' => poem
                  }
   response = http.request(request)
+  response
 end
