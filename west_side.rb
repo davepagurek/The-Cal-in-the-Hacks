@@ -14,7 +14,7 @@ module WestSide
     def run
       puts "Pick a seed word:"
       puts @related.words.to_a.sort.join(", ")
-      word = gets.trim
+      word = gets.strip
 
       unless @related.words.include? word
         puts "That's not a good word :("
@@ -23,14 +23,14 @@ module WestSide
 
       puts generate_endings(word)
     end
-  end
 
-  def generate_endings(word)
-    (@num_couplets*2 - 1).times.reduce([word]) do |endings, _|
-      if endings.length.odd?
-        endings.push(Rhyme.new(endings.last).get_top_rhyme)
-      else
-        endings.push(@related.related_word(endings.last))
+    def generate_endings(word)
+      (@num_couplets*2 - 1).times.reduce([word]) do |endings, _|
+        if endings.length.odd?
+          endings.push(Rhyme.new(endings.last).get_top_rhyme)
+        else
+          endings.push(@related.related_word(endings.last))
+        end
       end
     end
   end
