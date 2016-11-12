@@ -2,6 +2,7 @@
 
 ## Setup
 ```
+brew install gsl
 bundle install
 ```
 
