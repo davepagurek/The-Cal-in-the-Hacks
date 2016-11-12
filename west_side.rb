@@ -5,28 +5,27 @@ require_relative 'related_words.rb'
 require_relative 'rhyming.rb'
 
 module WestSide
-  class CLI
-    def initialize(source: "sources/gatsby.txt", num_couplets: 5)
+  class Builder
+    def initialize(
+      source: "#{File.dirname(__FILE__)}/sources/gatsby.txt",
+      num_couplets: 5
+    )
       @related = WestSide::RelatedWords.new(source)
       @sentence = WestSide::SentenceBuilder.new(source)
       @num_couplets = num_couplets
     end
 
-    def run
-      puts "Pick a seed word:"
-      puts @related.words.to_a.shuffle[0..10].to_a.sort.join(", ")
-      word = gets.strip
+    def words_sample
+      @related.words.to_a.shuffle[0..10].to_a.sort
+    end
 
-      unless @related.words.include? word
-        puts "That's not a good word :("
-        return
-      end
-
-      syllables = (8..16).to_a.sample
-      rap = generate_endings(word)
+    def build(seed, syllables)
+      generate_endings(seed)
         .map{|w| @sentence.get_sentence(w, syllables)}
+    end
 
-      puts rap
+    def valid_words
+      @related.words
     end
 
     def generate_endings(word)
@@ -51,5 +50,3 @@ module WestSide
     end
   end
 end
-
-WestSide::CLI.new.run
