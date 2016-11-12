@@ -48,7 +48,7 @@ module WestSide
 
     def get_lines_around(word)
       context = "((?:.*\n){2})"
-      regexp = /.* #{word}\b.*\n/
+      regexp = /.*#{word}\b.*\n/
       text =~ /^#{context}(#{regexp})#{context}/
       before, match, after = $1, $2, $3
       before ||= ""
@@ -72,11 +72,13 @@ module WestSide
     end
 
     def validate(sentence)
-      types = []
-      sentence.split(" ").each do |word|
-        types << type_of(word)
-      end
-      return types.include?("verb") && types.include?("noun")
+      return false if sentence.include? "."
+      return true
+      # types = []
+      # sentence.split(" ").each do |word|
+      #   types << type_of(word)
+      # end
+      # return types.include?("verb") && types.include?("noun")
     end
 
     def remove_syllables(sentence, num_syllables)
@@ -108,26 +110,37 @@ module WestSide
           break
         end
       end
-      words.drop(words.size - to_add).reverse.join(" ")
+      words.reverse.drop(words.size - to_add).join(" ")
+    end
+
+    def evaluate(sentence)
+
     end
 
     def get_sentence(word, num_syllables)
-      valid = false
-      while valid == false do
+      found_all_sentences = false
+      valid_sentences = []
+      while found_all_sentences == false do
         before, match, after = get_lines_around word
-        sentence = /.* #{word}/.match(match).to_s
+        sentence = /.*#{word}/.match(match).to_s
         syllables = get_sentence_syllables sentence
         if syllables > num_syllables
           sentence = remove_syllables(sentence, syllables - num_syllables)
         elsif syllables < num_syllables
-          sentence = get_syllables(before, num_syllables - syllables) + sentence
+          if sentence != ""
+            sentence = get_syllables(before, num_syllables - syllables) + " " + sentence
+          end
         end
         if sentence == ""
-          break
+          found_all_sentences = true
         end
-        valid = validate(sentence)
+        if validate(sentence)
+          valid_sentences << sentence.gsub('"', '')
+        end
       end
-      sentence
+      valid_sentences
     end
   end
 end
+
+puts WestSide::SentenceBuilder.new.get_sentence("villainous", 10)
