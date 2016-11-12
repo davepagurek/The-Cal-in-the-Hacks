@@ -29,11 +29,16 @@ module WestSide
     end
 
     def generate_lines(word, syllables)
-      lines = [
-        WestSide::SentenceBuilder
-          .new(@source)
-          .get_sentence(word, syllables)
-      ]
+      begin
+        lines = [
+          WestSide::SentenceBuilder
+            .new(@source)
+            .get_sentence(word, syllables)
+        ]
+      rescue SentenceBuilder::NoSentenceError
+        return ["Oops, something went wrong :("]
+      end
+
       endings = [word]
       used = Set.new
       while lines.length < @num_couplets*2 do

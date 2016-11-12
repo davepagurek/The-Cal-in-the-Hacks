@@ -47,6 +47,7 @@ button, button.inverted:hover {
   font-size: 1rem;
   padding: 0.5em;
   border-radius: 0.2em;
+  margin: 0.1em;
   transition: all ease 0.3s;
 }
 button:hover, button.inverted {
