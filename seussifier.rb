@@ -29,7 +29,7 @@ module WestSide
     class WordMaker
       attr_accessor :suffix
       def initialize
-        @suffix = ["itty", "uzz", "-a-ma-", "eeds"]
+        @suffix = ["itty", "uzz", "-a-ma-", "eeds", "izzle"]
       end
 
       def drop_vowels(word)
@@ -51,6 +51,8 @@ module WestSide
             word + "uzz"
           when "-a-ma-"
             word + "-a-ma-" + word.sub(/[^aeyiuo]+/, "f")
+          when "izzle"
+            word + "izzle"
           else
             word + "eeds"
           end
