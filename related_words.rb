@@ -16,7 +16,10 @@ module WestSide
     end
 
     def words
-      @words ||= File.read(@source).split(/\s+/).to_set
+      @words ||= File.read(@source)
+      .split(/\s+/)
+      .map{|w| w.gsub(/\W/, '')}
+      .to_set
     end
 
     def model
@@ -31,7 +34,7 @@ module WestSide
       if SOURCES.all?{|f| File.exists?(f)}
         @model.load(*SOURCES)
       else
-        text = File.read(INPUT)
+        text = File.read(@source)
         @model.fit(text)
 
         corpus = Glove::Corpus.build(text, {
@@ -50,6 +53,8 @@ module WestSide
 
     def word_stems
       @word_stems ||= model.token_index.keys.to_set
+      puts @word_stems.length
+      @word_stems
     end
 
     def relatedness(a, b)
@@ -62,7 +67,7 @@ module WestSide
       return model.send(:cosine, vec_a, vec_b)
     end
 
-    def related_word_stems(word, used = Set.new)
+    def related_words(word, used = Set.new)
       (model.most_similar(word, 20).to_set - used)
         .map do |(stem, _)|
           words.find{|w| w.start_with?(stem)}
@@ -70,8 +75,9 @@ module WestSide
         .compact
         .map{|w| w.gsub(/\W/, '')}
     end
+
+    def related_word(word, used = Set.new)
+      related_words(word, used).sample
+    end
   end
 end
-
-
-#puts WestSide::RelatedWords.new("sources/gatsby.txt").related_word_stems("sport")

@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'set'
 
 SCORE = "score"
 WORD = "word"
@@ -36,22 +37,25 @@ class Rhyme
     true
   end
 
-  def get_top_rhyme(used_words = {}, top: 10)
+  def get_top_rhyme(used_words: Set.new, potential_words: Set.new, top: 10)
     get_response
     json_rhymes
 
-    index = rand(top)
-    rhyming_words.sort_by{ |word| word[SCORE] }.reverse!
+    filtered_words = rhyming_words
+      .select{ |one_word| potential_words.include? one_word[WORD] }
+      .sort_by{ |word| word[SCORE] }.reverse!
 
-    raise UsedAllWords if check_every_word(used_words, rhyming_words[0..top])
+    raise EmptyFilteredSetError if filtered_words.empty?
+    raise UsedAllWords if check_every_word(used_words, filtered_words[0...top])
 
-    while used_words.include? rhyming_words[0..top][index][WORD] do
+    while used_words.include? (val = filtered_words[0..top].sample[WORD]) do
       index = rand(top)
     end
 
-    rhyming_words[0..top][index][WORD]
+    val
   end
 
+  class EmptyFilteredSetError < StandardError ; end
   class BodyNotSetError < StandardError ; end
   class UsedAllWordsError < StandardError ; end
 end
