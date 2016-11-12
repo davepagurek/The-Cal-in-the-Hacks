@@ -1,5 +1,6 @@
 require 'net/http'
 require 'json'
+require 'set'
 
 SCORE = "score"
 WORD = "word"
@@ -36,7 +37,7 @@ class Rhyme
     true
   end
 
-  def get_top_rhyme(used_words = {}, top: 10)
+  def get_top_rhyme(used_words = Set.new, top: 10)
     get_response
     json_rhymes
 
