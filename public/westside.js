@@ -41,6 +41,7 @@ function loadSeeds() {
   });
 }
 
+var 
 function generate(seed) {
   showLoader();
   axios.post('/generate', {seed: seed, seussify: document.getElementById("seussify").checked}).then(function(response) {
@@ -56,6 +57,8 @@ function generate(seed) {
       lineDiv.textContent = line;
       verses.appendChild(lineDiv);
     });
+
+    document.querySelector('#source').src = response.data.file;
 
     showSection("rap");
   });
