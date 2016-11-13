@@ -1,4 +1,7 @@
 # Cal In The Hacks
+A poetry generator, trained from The Wizard of Oz and The Great Gatsby.
+
+http://poetry.davepagurek.com
 
 ## Setup
 ```
@@ -8,5 +11,5 @@ bundle install
 
 ## Running
 ```
-./test.rb
+ruby server.rb
 ```
