@@ -33,7 +33,7 @@ post '/generate' do
   content_type :json
   data = JSON.parse(request.body.read)
 
-  poem = builder.build(data["seed"])
+  poem = builder.build(data["seed"], data["seussify"])
   uuid = SecureRandom.uuid
   Kernel.system "curl -X POST -u 183647eb-7c6b-4942-8669-03c4b9379bb9:h3edpLwXlaxR " +
                  "--header 'Content-Type: application/json' " +
