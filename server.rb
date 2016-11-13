@@ -21,16 +21,14 @@ post '/generate' do
   data = JSON.parse(request.body.read)
 
   poem = builder.build(data["seed"])
-  data = http.request(request)
-  File.write(data, 'poem.ogg')
-  { lines: poem }.to_json
-
   uuid = SecureRandom.uuid
-  Kernel.system "curl -X POST -u 183647eb-7c6b-4942-8669-03c4b9379bb9:h3edpLwXlaxR
-                 --header 'Content-Type: application/json'
-                 --header 'Accept: audio/wav'
-                 --data '{\"text\": #{poem.join(', ').inspect }}'
-                 'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize' > public/audio/poem#{uuid}.wav"
+  Kernel.system "curl -X POST -u 183647eb-7c6b-4942-8669-03c4b9379bb9:h3edpLwXlaxR " +
+                 "--header 'Content-Type: application/json' " +
+                 "--header 'Accept: audio/wav' " +
+                 "--data '{\"text\": #{poem.join(', ').inspect }}' " +
+                 "'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize' > public/audio/poem#{uuid}.wav"
+  { lines: poem, uuid: "public/audio/#{uuid}" }.to_json
+
 end
 
 get '/' do
