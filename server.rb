@@ -11,6 +11,19 @@ AUDIO_URI = 'https://stream.watsonplatform.net'
 
 builder = WestSide::Builder.new
 
+def file_age(name)
+  (Time.now - File.ctime(name))/(60*60)
+end
+
+def cleanup!
+  Dir.glob('public/audio/*.wav').each do |filename|
+    if file_age(filename) > 1
+      puts "Deleting #{filename}"
+      File.delete(filename)
+    end
+  end
+end
+
 get '/sample_words' do
   content_type :json
   {words: builder.words_sample.to_a}.to_json
@@ -27,6 +40,7 @@ post '/generate' do
                  "--header 'Accept: audio/wav' " +
                  "--data '{\"text\": #{poem.join(', ').inspect.gsub("'", "\\'") }}' " +
                  "'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize' > public/audio/poem#{uuid}.wav"
+  cleanup!
   { lines: poem, file: "/audio/poem#{uuid}.wav" }.to_json
 
 end
