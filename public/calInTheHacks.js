@@ -74,5 +74,5 @@ function playAudio() {
 
 document.querySelector("#more").addEventListener("click", loadSeeds);
 document.querySelector("#another").addEventListener("click", loadSeeds);
-document.querySelector("#listen").addEventListener("click", playAudio);
+//document.querySelector("#listen").addEventListener("click", playAudio);
 loadSeeds();
