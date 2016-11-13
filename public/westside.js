@@ -41,10 +41,13 @@ function loadSeeds() {
   });
 }
 
-var 
+var audioInfo = {url: ""}
 function generate(seed) {
   showLoader();
-  axios.post('/generate', {seed: seed, seussify: document.getElementById("seussify").checked}).then(function(response) {
+  axios.post('/generate', {
+    seed: seed,
+    seussify: document.getElementById("seussify").checked
+  }).then(function(response) {
     // clear verses
     var verses = document.querySelector('#verses');
     while (verses.firstChild) {
@@ -58,16 +61,18 @@ function generate(seed) {
       verses.appendChild(lineDiv);
     });
 
-    document.querySelector('#source').src = response.data.file;
+    audioInfo.url = response.data.file;
 
     showSection("rap");
   });
 }
 
-function textToSpeech() {
-  axios.post('/gen_audio', { text: text });
+function playAudio() {
+  var audio = new Audio(audioInfo.url);
+  audio.play();
 }
 
 document.querySelector("#more").addEventListener("click", loadSeeds);
 document.querySelector("#another").addEventListener("click", loadSeeds);
+document.querySelector("#listen").addEventListener("click", playAudio);
 loadSeeds();

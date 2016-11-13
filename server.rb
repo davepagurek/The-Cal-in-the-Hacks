@@ -25,15 +25,19 @@ post '/generate' do
   Kernel.system "curl -X POST -u 183647eb-7c6b-4942-8669-03c4b9379bb9:h3edpLwXlaxR " +
                  "--header 'Content-Type: application/json' " +
                  "--header 'Accept: audio/wav' " +
-                 "--data '{\"text\": #{poem.join(', ').inspect }}' " +
+                 "--data '{\"text\": #{poem.join(', ').inspect.gsub("'", "\\'") }}' " +
                  "'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize' > public/audio/poem#{uuid}.wav"
-  { lines: poem, file: "public/audio/#{uuid}" }.to_json
+  { lines: poem, file: "/audio/poem#{uuid}.wav" }.to_json
 
 end
 
 get '/' do
   content_type :html
   File.new('public/index.html').readlines
+end
+
+get '/audio/*' do |file|
+  send_file "public/audio/#{file}"
 end
 
 post '/gen_audio' do
