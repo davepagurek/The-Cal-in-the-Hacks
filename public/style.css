@@ -14,13 +14,13 @@ html, body {
 .hidden {
   overflow: hidden;
   height: 0;
-  padding: 0 5em;
+  padding: 0 2em;
   opacity: 0;
 }
 
 section {
   box-sizing: border-box;
-  padding: 5em;
+  padding: 2em;
   transition: all ease 0.4s;
   display: flex;
   flex-direction: column;
@@ -29,12 +29,15 @@ section {
   height: 100vh;
   position: relative;
   z-index: 1;
+  margin: 0 auto;
+  max-width: 30em;
 }
 
 h1 {
   font-weight: normal;
   font-size: 5em;
   margin: 0 0 0.5em 0;
+  text-align: center;
 }
 
 #seed_list {
