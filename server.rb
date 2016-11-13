@@ -27,7 +27,7 @@ post '/generate' do
                  "--header 'Accept: audio/wav' " +
                  "--data '{\"text\": #{poem.join(', ').inspect }}' " +
                  "'https://stream.watsonplatform.net/text-to-speech/api/v1/synthesize' > public/audio/poem#{uuid}.wav"
-  { lines: poem, uuid: "public/audio/#{uuid}" }.to_json
+  { lines: poem, file: "public/audio/#{uuid}" }.to_json
 
 end
 
