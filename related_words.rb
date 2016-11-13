@@ -3,12 +3,12 @@
 require 'glove'
 require_relative 'word_types.rb'
 
-module WestSide
+module CalInTheHacks
   class RelatedWords
 
     def initialize(source, word_types)
       @source = source
-      @word_types = word_types || WestSide::WordTypes.new
+      @word_types = word_types || CalInTheHacks::WordTypes.new
       @saved = ['corpus.bin', 'cooc-matrix.bin', 'word-vec.bin', 'word-biases.bin']
         .map{|f| "preprocessed/#{source.gsub(/\W/, '_')}__#{f}"}
     end

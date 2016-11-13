@@ -6,16 +6,16 @@ require_relative 'rhyming.rb'
 require_relative 'word_types.rb'
 require_relative 'seussifier.rb'
 
-module WestSide
+module CalInTheHacks
   class Builder
     def initialize(
       source: "#{File.dirname(__FILE__)}/sources/oz.txt",
       num_couplets: 5
     )
       @source = source
-      @word_types = WestSide::WordTypes.new
-      @related = WestSide::RelatedWords.new(@source, @word_types)
-      @seussifier = WestSide::Seussifier.new()
+      @word_types = CalInTheHacks::WordTypes.new
+      @related = CalInTheHacks::RelatedWords.new(@source, @word_types)
+      @seussifier = CalInTheHacks::Seussifier.new()
       @num_couplets = num_couplets
     end
 
@@ -42,7 +42,7 @@ module WestSide
     def generate_lines(word, syllables)
       begin
         lines = [
-          WestSide::SentenceBuilder
+          CalInTheHacks::SentenceBuilder
             .new(@source, @related, @word_types)
             .get_sentence(word, syllables)
         ]
@@ -67,7 +67,7 @@ module WestSide
             word = @related.related_word(endings.last)
           end
           lines.push(
-            WestSide::SentenceBuilder
+            CalInTheHacks::SentenceBuilder
               .new(@source, @related, @word_types)
               .get_sentence(word, syllables)
           )

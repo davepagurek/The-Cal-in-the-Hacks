@@ -5,11 +5,11 @@ require 'json'
 require 'net/http'
 require 'securerandom'
 
-require_relative 'west_side.rb'
+require_relative 'cal_in_the_hacks.rb'
 
 AUDIO_URI = 'https://stream.watsonplatform.net'
 
-builder = WestSide::Builder.new
+builder = CalInTheHacks::Builder.new
 
 def file_age(name)
   (Time.now - File.ctime(name))/(60*60)

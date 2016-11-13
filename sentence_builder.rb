@@ -2,12 +2,12 @@ require 'set'
 require_relative 'related_words.rb'
 require_relative 'word_types.rb'
 
-module WestSide
+module CalInTheHacks
   class SentenceBuilder
     def initialize(source, related = nil, word_types = nil)
-      @word_types = word_types || WestSide::WordTypes.new
+      @word_types = word_types || CalInTheHacks::WordTypes.new
       @source_file = source
-      @related_words = related || WestSide::RelatedWords.new(source)
+      @related_words = related || CalInTheHacks::RelatedWords.new(source)
       @text = File.read(@source_file)
     end
 

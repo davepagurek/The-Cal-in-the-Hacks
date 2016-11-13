@@ -1,4 +1,4 @@
-# WestSide
+# Cal In The Hacks
 
 ## Setup
 ```

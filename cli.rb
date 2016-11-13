@@ -1,15 +1,15 @@
 #!/usr/bin/env ruby
-require_relative 'west_side.rb'
+require_relative 'cal_in_the_hacks.rb'
 require_relative 'seussifier.rb'
 
-module WestSide
+module CalInTheHacks
   class CLI
     def initialize(source: "sources/oz.txt", num_couplets: 5)
-      @builder = WestSide::Builder.new(
+      @builder = CalInTheHacks::Builder.new(
         source: source,
         num_couplets: num_couplets
       )
-      @seussifier = WestSide::Seussifier.new()
+      @seussifier = CalInTheHacks::Seussifier.new()
     end
 
     def run
@@ -30,4 +30,4 @@ module WestSide
   end
 end
 
-WestSide::CLI.new.run
+CalInTheHacks::CLI.new.run

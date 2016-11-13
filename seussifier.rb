@@ -1,4 +1,4 @@
-module WestSide
+module CalInTheHacks
   class Seussifier
     def initialize()
       @word_maker = WordMaker.new()

@@ -1,6 +1,6 @@
 require 'set'
 
-module WestSide
+module CalInTheHacks
   class WordTypes
     attr_reader :adjectives, :adverbs, :articles, :conjs, :inters, :nouns, :preps, :pros, :verb_i, :verb_t
 
